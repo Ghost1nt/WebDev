@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #3498db; /* Add blue background color */
+}
+
+.wrapper-container .container-content {
+    padding: 48px;
+}
+
+.center {
+    text-align: center;
+}
+
+.wrapper-container .container-content .content-flex {
+    margin: 32px auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.wrapper-container .container-content .content-flex .flex-img {
+    position: relative;
+}
+
+.wrapper-container .container-content .content-flex .flex-img img {
+    height: 480px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+    transition: transform 0.4s ease;
+    border-radius: 4px;
+}
+
+.wrapper-container .container-content .content-flex .flex-img:hover img {
+    transform: scale(1.04);
+}
+
+.wrapper-container .container-content .content-flex .flex-img .img-text {
+    padding: 16px;
+    background-color: #3498db;
+    backdrop-filter: blur(8px);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    transform: translateY(100%);
+    opacity: 0;
+    border-radius: 4px;
+}
+
+.wrapper-container .container-content .content-flex .flex-img:hover .img-text {
+    transform: translateY(0);
+    opacity: 1;
+}

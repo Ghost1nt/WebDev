@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!---Code from here onwards is from student 2 -->
+<head>
+    <!-- Define character set -->
+    <meta charset="UTF-8">
+    <!-- Define viewport for responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the page -->
+    <title>User Profile</title>
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1754a4;
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Fascinate', cursive;
+            color: white;
+            text-align: center;
+            font-size: 40px;
+            margin: 40px 0 80px 0;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            margin-right: auto;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #000000;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .logo {
+            margin-right: 10px;
+        }
+
+        .image-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .image-container img {
+            border-radius: 20px;
+            max-width: 100%;
+        }
+
+        .text-container {
+            color: white;
+            text-align: center;
+            margin-left: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="logoforwater.png" alt="Logo" height="100" class="logo">
+        <h1>Clean Water and Sanitation</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#sitemap">Sitemap</a></li>
+                <li><a href="#feedback">Feedback</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#pageeditor">Page editor</a></li>
+            </ul>
+        </nav>
+    </header>
+<!---Code up to here is from student 2 -->
+
+
+    <!-- Main wrapper container -->
+    <div class="wrapper-container">
+        <!-- Content container -->
+        <div class="container-content">
+            <!-- Header with title centered -->
+            <h2 class="center">User Profile</h2>
+            <!-- Container for profile content -->
+            <div class="content-profile">
+                <!-- Display profile completion status -->
+                <div class="profile-completion" id="profile-completion">Profile completed 0%</div>
+                <!-- Progress bar container -->
+                <div class="progress-bar">
+                    <!-- Progress bar indicating completion -->
+                    <div class="progress" id="progress"></div>
+                </div>
+                <!-- Container for prompts -->
+                <div id="prompts"></div>
+                <!-- Form for user input -->
+                <form id="user-input-form">
+                    <!-- Button to proceed to next prompt -->
+                    <button type="button" id="next-btn" onclick="nextPrompt()">Next</button>
+                    <!-- Button to skip current prompt -->
+                    <button type="button" id="skip-btn" onclick="skipPrompt()">Skip</button>
+                </form>
+                <!-- Container to display prompt outputs -->
+                <div id="prompt-output" class="prompt-output"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript code -->
+    <script>
+        // Array of arrays representing different steps of prompts
+        const steps = [
+            ["Name", "Surname", "Location"],
+            ["Do you have access to clean drinking water at your residence?", "How often do you wash your hands with soap and water?"],
+            ["How satisfied are you with the quality of water in your area?", "Would you give up your water?"]
+        ];
+        // Variables to track current step and prompt
+        let currentStep = 0;
+        let currentPrompt = 0;
+        // Object to store user profile data
+        let userProfile = {};
+
+        // DOM elements used in the script
+        const progress = document.getElementById("progress");
+        const promptsContainer = document.getElementById("prompts");
+        const promptOutput = document.getElementById("prompt-output");
+        const skipButton = document.getElementById("skip-btn");
+        const profileCompletion = document.getElementById("profile-completion");
+        const nextButton = document.getElementById("next-btn");
+        const userInputForm = document.getElementById("user-input-form");
+
+        // Function to display prompts
+        function displayPrompts() {
+            // Clear existing prompts container
+            promptsContainer.innerHTML = "";
+            // Retrieve prompts for current step
+            const promptsInSection = steps[currentStep];
+            // Iterate through prompts and create corresponding HTML elements
+            promptsInSection.forEach(prompt => {
+                const promptElement = document.createElement("div");
+                promptElement.classList.add("prompt");
+                // Generate HTML for each prompt
+                promptElement.innerHTML = `
+                <label>${prompt}:</label>
+                <input type="text" id="${prompt.toLowerCase().replace(" ", "-")}"/>
+                `;
+                // Append prompt element to prompts container
+                promptsContainer.appendChild(promptElement);
+            });
+        }
+
+        // Function to update progress bar
+        function updateProgress() {
+            // Calculate total number of steps
+            const totalSteps = steps.reduce((acc, step) => acc + step.length, 0);
+            // Calculate completed steps including current step and prompt
+            const completedSteps = currentStep * 3 + currentPrompt;
+            // Calculate percentage of completion
+            let percentage = (completedSteps / totalSteps) * 100;
+            // Ensure percentage does not exceed 100%
+            percentage = Math.min(percentage, 100);
+            // Update progress bar width based on percentage
+            progress.style.width = percentage + "%";
+            // Update profile completion text to display percentage
+            profileCompletion.textContent = `Profile completed ${Math.round(percentage)}%`;
+        }
+
+        // Function to handle next prompt
+        function nextPrompt() {
+            // Retrieve prompts for current step
+            const promptsInSection = steps[currentStep];
+            // Iterate through prompts and save user responses
+            promptsInSection.forEach(prompt => {
+                // Retrieve user input for each prompt
+                const promptValue = document.getElementById(prompt.toLowerCase().replace(" ", "-")).value;
+                // Store user response in userProfile object
+                userProfile[prompt] = promptValue;
+                // Display prompt output
+                displayPromptOutput(prompt, promptValue);
+                // Display prompt output container
+                promptOutput.style.display = "block";
+                // Clear input field after saving user response
+                document.getElementById(prompt.toLowerCase().replace(" ", "-")).value = "";
+            });
+
+            // Move to the next step
+            currentStep++;
+            // Reset current prompt index
+            currentPrompt = 0;
+
+            // Check if there are more steps remaining
+            if (currentStep < steps.length) {
+                // Display prompts for the next step
+                displayPrompts();
+            } else {
+                // Display user profile once all prompts are completed
+                displayUserProfile();
+            }
+            // Update progress bar
+            updateProgress();
+        }
+
+        // Function to skip prompt
+        function skipPrompt() {
+            // Move to the next step
+            currentStep++;
+            // Reset current prompt index
+            currentPrompt = 0;
+            // Check if there are more steps remaining
+            if (currentStep < steps.length) {
+                // Display prompts for the next step
+                displayPrompts();
+            } else {
+                // Display user profile once all prompts are completed
+                displayUserProfile();
+            }
+            // Update progress bar
+            updateProgress();
+        }
+
+        // Function to display prompt output
+        function displayPromptOutput(prompt, value) {
+            // Create a new paragraph element to display the prompt and its value
+            const promptOutputElement = document.createElement("p");
+            promptOutputElement.innerHTML = `<strong>${prompt}:</strong> ${value}`;
+            // Append prompt output element to prompt output container
+            promptOutput.appendChild(promptOutputElement);
+
+            // Create a thick line (horizontal rule) to separate each set of prompts output
+            const lineBreak = document.createElement("hr");
+            lineBreak.style.border = "none"; // Remove default border
+            lineBreak.style.borderTop = "4px solid #aeaeae"; // Set the color to the same as the background
+            // Append line break element to prompt output container
+            promptOutput.appendChild(lineBreak);
+        }
+
+        // Function to display user profile
+        function displayUserProfile() {
+            // Initialize HTML string for user profile display
+            let profileHtml = "";
+            // Iterate through user profile data and create HTML for display
+            Object.entries(userProfile).forEach(([key, value]) => {
+                profileHtml += `<p><strong>${key}:</strong> ${value}</p>`;
+            });
+            // Update prompt output container with user profile HTML
+            promptOutput.innerHTML = profileHtml;
+            // Hide skip button as all prompts are completed
+            skipButton.style.display = "none";
+        }
+
+        // Display initial prompts
+        displayPrompts();
+    </script>
+</body>
+
+</html>

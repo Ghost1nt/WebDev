@@ -1,0 +1,87 @@
+/* Set body font family to Arial and fallback to sans-serif */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    background-color: #3498db; /* Set background color to #3498db */
+}
+
+/* Set padding for content container */
+.wrapper-container .container-content {
+    padding: 48px;
+}
+
+/* Center-align text */
+.center {
+    text-align: center;
+}
+
+/* Style the profile content */
+.content-profile {
+    max-width: 640px;
+    margin: 24px auto;
+    padding: 24px 24px;
+    border: 1px solid #d2f0f5;
+    border-radius: 4px;
+}
+
+/* Style the progress bar container */
+.progress-bar {
+    width: 100%;
+    background-color: #aeaeae; /* Set background color for progress bar container */
+    border-radius: 4px;
+    margin: 4px 0 16px 0;
+}
+
+/* Style the progress bar */
+.progress {
+    width: 0;
+    height: 24px;
+    background-color: #28e399;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+/* Style the prompts */
+.prompt {
+    margin-bottom: 16px;
+}
+
+/* Style the profile completion text */
+.profile-completion {
+    margin-top: 16px;
+}
+
+/* Style the prompt output */
+.prompt-output {
+    margin-top: 16px;
+    padding: 8px 24px;
+    background-color: #aeaeae; /* Set background color for profile output */
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+}
+
+/* Style the buttons */
+button {
+    padding: 8px 16px;
+    border-radius: 16px;
+    border: 1px solid #CCCCCC;
+    background-color: #aeaeae; /* Set background color for buttons */
+    cursor: pointer;
+}
+
+/* Additional styling for content-profile */
+.content-profile {
+    border: none; /* Remove previous border */
+    border-radius: 8px; /* Add border radius for rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow for a subtle effect */
+}
+
+/* Style the text boxes */
+input[type="text"] {
+    background-color: #aeaeae; /* Set background color for text boxes */
+    border: 1px solid #ccc; /* Add border for text boxes */
+    border-radius: 4px; /* Add border radius for rounded corners */
+    padding: 8px; /* Add padding for text boxes */
+    width: 100%; /* Set width to 100% */
+    box-sizing: border-box; /* Include border and padding in the width calculation */
+}
